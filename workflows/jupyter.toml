@@ -1,0 +1,10 @@
+name = 'jupyter'
+description = 'Create a new jupyter notebook with a virtualenv'
+steps = [
+    'Create a directory $1', # Generic commands
+    'Change directory $1', # Generic commands
+    'Create python venv',
+    'Activate venv',
+    '#ipython kernel install --name $2 --user;', # Shell command
+    'Create file $2'
+]
