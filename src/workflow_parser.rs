@@ -6,18 +6,18 @@ pub mod workflow_parser {
     use toml::Value;
 
     pub struct WorkflowParser {
-        built_in_steps: HashMap<&str, Step>
+        built_in_steps: HashMap<String, Step>
     }
 
     impl WorkflowParser {
         pub fn new() -> Self {
             WorkflowParser {
                 built_in_steps: HashMap::from([
-                    ("Create a directory $1", Step::new("Create a directory", "mkdir $1", 1)),
-                    ("Change directory $1", Step::new("Change directory", "cd $1", 1)),
-                    ("Create python venv", Step::new("Change directory", "cd $1", 1)),
-                    ("Activate venv", Step::new("Activate venv", "source .venv/bin/activate", 0)),
-                    ("Create file $2", Step::new("Create file", "touch $2", 1))
+                    (String::from("Create a directory $1"), Step::new("Create a directory", "mkdir $1", 1)),
+                    (String::from("Change directory $1"), Step::new("Change directory", "cd $1", 1)),
+                    (String::from("Create python venv"), Step::new("Change directory", "cd $1", 1)),
+                    (String::from("Activate venv"), Step::new("Activate venv", "source .venv/bin/activate", 0)),
+                    (String::from("Create file $2"), Step::new("Create file", "touch $2", 1))
                 ])
             }
         }
