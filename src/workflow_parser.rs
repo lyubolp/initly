@@ -15,7 +15,7 @@ pub mod workflow_parser {
                 built_in_steps: HashMap::from([
                     (String::from("Create a directory $1"), Step::new("Create a directory", "mkdir $1", 1)),
                     (String::from("Change directory $1"), Step::new("Change directory", "cd $1", 1)),
-                    (String::from("Create python venv"), Step::new("Change directory", "cd $1", 1)),
+                    (String::from("Create python venv"), Step::new("Create python venv", "python3 -m venv .venv", 0)),
                     (String::from("Activate venv"), Step::new("Activate venv", "source .venv/bin/activate", 0)),
                     (String::from("Create file $2"), Step::new("Create file", "touch $2", 1))
                 ])
