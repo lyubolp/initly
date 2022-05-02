@@ -6,7 +6,7 @@ pub mod workflow_parser {
     use toml::Value;
 
     pub struct WorkflowParser {
-        built_in_steps: HashMap<String, Step>
+        built_in_steps: HashMap<String, Step>,
     }
 
     impl WorkflowParser {
@@ -36,11 +36,11 @@ pub mod workflow_parser {
                     let name: Option<&str> = values["name"].as_str();
                     let description: Option<&str> = values["description"].as_str();
                     let steps: Option<&Vec<Value>> = values["steps"].as_array();
+                    let arguments_count = values["arguments"].as_integer();
 
-                    if name.is_none() || description.is_none() || steps.is_none() {
+                    if name.is_none() || description.is_none() || steps.is_none() || arguments_count.is_none() {
                         Err(String::from("Cannot parse file"))
-                    }
-                    else {
+                    } else {
                         Ok(Workflow::new(String::from(name.unwrap()),
                                          String::from(description.unwrap()),
                                          steps.unwrap().iter()
@@ -48,19 +48,17 @@ pub mod workflow_parser {
                                              .map(|command_string: &str| {
                                                  if self.built_in_steps.contains_key(command_string) {
                                                      self.built_in_steps.get(command_string).unwrap().clone()
-                                                 }
-                                                 else {
+                                                 } else {
                                                      Step::from_command_string(command_string)
                                                  }
                                              })
-                                             .collect()))
+                                             .collect(),
+                                         arguments_count.unwrap() as u32,
+                        ))
                     }
                 }
                 Err(_) => Err(String::from("Cannot parse file"))
             }
         }
     }
-
-
-
 }
