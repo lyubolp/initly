@@ -1,6 +1,6 @@
 pub mod step {
     use std::collections::VecDeque;
-    use regex::Regex;
+    use regex::{CaptureMatches, Regex, Captures};
     use crate::executor::executor::execute_command;
     use crate::program_output::program_output::ProgramOutput;
 
@@ -11,7 +11,7 @@ pub mod step {
         amount_expected_arguments: u32,
         real_argument_regex: Regex
     }
-    // TODO - Add a way to get the exact needed argument. Check the jupyter.toml and 'Create file $2'
+
     impl Step {
         pub fn new(name: &str, command: &str, amount_expected_arguments: u32) -> Self {
             Step {
@@ -39,6 +39,24 @@ pub mod step {
             } else {
                 Err(String::from("Not enough arguments passed"))
             }
+        }
+
+        pub fn get_name(&self) -> &String {
+            &self.name
+        }
+
+        pub fn get_command(&self) -> &String {
+            &self.command
+        }
+        
+        pub fn get_argument_ids(&self) -> Vec<usize> {
+            let matches: CaptureMatches = self.real_argument_regex.captures_iter(self.command.as_str());
+
+            matches.map(|capture: Captures| {
+                let argument: String = String::from(&capture[1]);
+                argument.split_at(1).1.parse::<usize>().unwrap()
+            })
+                .collect()
         }
 
         fn build_final_command(&self, actual_arguments: Option<&VecDeque<String>>) -> (String, Vec<String>) {
