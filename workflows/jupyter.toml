@@ -8,3 +8,4 @@ steps = [
     '#ipython kernel install --name $2 --user;', # Shell command
     'Create file $2'
 ]
+arguments = 2
