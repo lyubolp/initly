@@ -2,9 +2,9 @@ pub mod executor {
     use crate::program_output::program_output::ProgramOutput;
     use std::process::Command;
 
-    pub fn execute_command(command: &str, args: Vec<&str>) -> Result<ProgramOutput, String> {
+    pub fn execute_command(command: &str, arguments: Vec<&str>) -> Result<ProgramOutput, String> {
         let output = Command::new(command)
-            .args(args)
+            .args(arguments)
             .output();
 
         match output {
@@ -15,7 +15,7 @@ pub mod executor {
                 }
             },
             Err(err) => {
-                let mut result = String::from("Can't execute the command").to_owned();
+                let mut result = String::from("Can't execute the command. Error: ").to_owned();
                 result.push_str(err.to_string().as_str());
                 Err(result)
             }
